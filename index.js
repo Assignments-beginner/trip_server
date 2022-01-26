@@ -1,4 +1,4 @@
-const express = require("express"); 
+const express = require("express");
 const app = express();
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
@@ -38,70 +38,69 @@ async function run() {
     const blogCollection = database.collection("blogs");
     const reviewCollection = database.collection("reviews");
     const userCollection = database.collection("users");
+    const tipsCollection = database.collection("tips");
 
 /*-------------------------------------------------------------------------------*\
-  //////////////////////////////// All Products \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+  //////////////////////////////// All blogs \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \*-------------------------------------------------------------------------------*/
 
-    // POST API For All Products
-    app.post("/products", async (req, res) => {
-      const product = req.body;
-      console.log(product);
-      const result = await productCollection.insertOne(product);
+    // POST API For All blogs
+    app.post("/blogs", async (req, res) => {
+      const blog = req.body;
+      console.log(blog);
+      const result = await blogCollection.insertOne(blog);
       console.log(result);
       res.json(result);
     });
 
-    //Get All Products API
-    app.get("/products", async (req, res) => {
-      const cursor = productCollection.find({});
-      const products = await cursor.toArray();
-      res.json(products);
+    //Get All blogs API
+    app.get("/blogs", async (req, res) => {
+      const cursor = blogCollection.find({});
+      const blogs = await cursor.toArray();
+      res.json(blogs);
     });
 
-    //Get All Products API By Pagination
-    app.get("/productspagination", async (req, res) => {
-      const cursor = productCollection.find({});
+    //Get All blogs API By Pagination
+    app.get("/blogspagination", async (req, res) => {
+      const cursor = blogCollection.find({});
       const page = req.query.page;
       const size = parseInt(req.query.size);
-      let products;
+      let blogs;
       const count = await cursor.count();
       if (page) {
-        products = await cursor
+        blogs = await cursor
           .skip(page * size)
           .limit(size)
           .toArray();
       } else {
-        products = await cursor.toArray();
+        blogs = await cursor.toArray();
       }
       res.send({
         count,
-        products,
+        blogs,
       });
     });
 
-    //Get Single Product
-    app.get("/products/:id", async (req, res) => {
+    //Get Single blog
+    app.get("/blogs/:id", async (req, res) => {
       const id = req.params.id;
-      console.log("Single product", id);
+      console.log("Single blog", id);
       const query = { _id: ObjectId(id) };
-      const product = await productCollection.findOne(query);
-      res.json(product);
+      const blog = await blogCollection.findOne(query);
+      res.json(blog);
     });
 
-    //Delete Single Product
-    app.delete("/products/:id", async (req, res) => {
+    //Delete Single blog
+    app.delete("/blogs/:id", async (req, res) => {
       const id = req.params.id;
-      console.log("Deleted product", id);
+      console.log("Deleted blog", id);
       const query = { _id: ObjectId(id) };
-      const result = await productCollection.deleteOne(query);
+      const result = await blogCollection.deleteOne(query);
       console.log("Deleted", result);
       res.json(result);
     });
 
-
-
-    /*-------------------------------------------------------------------------------*\
+/*-------------------------------------------------------------------------------*\
   //////////////////////////////// Users \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \*-------------------------------------------------------------------------------*/
 
@@ -153,16 +152,16 @@ async function run() {
       res.json({ admin: isAdmin });
     });
 
-    /*-------------------------------------------------------------------------------*\
+/*-------------------------------------------------------------------------------*\
   //////////////////////////////// Reviews \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \*-------------------------------------------------------------------------------*/
 
     //POST API For Reviews
     app.post("/reviews", async (req, res) => {
       const review = req.body;
-      console.log(review);
+      // console.log(review);
       const result = await reviewCollection.insertOne(review);
-      console.log(result);
+      // console.log(result);
       res.json(result);
     });
 
@@ -171,6 +170,26 @@ async function run() {
       const cursor = reviewCollection.find({});
       const reviews = await cursor.toArray();
       res.json(reviews);
+    });
+
+/*-------------------------------------------------------------------------------*\
+  //////////////////////////////// Tips \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\*-------------------------------------------------------------------------------*/
+
+    //POST API For Tips
+    app.post("/tips", async (req, res) => {
+      const tip = req.body;
+      // console.log(tip);
+      const result = await tipsCollection.insertOne(tip);
+      // console.log(result);
+      res.json(result);
+    });
+
+    //Get Reviews API
+    app.get("/tips", async (req, res) => {
+      const cursor = tipsCollection.find({});
+      const tips = await cursor.toArray();
+      res.json(tips);
     });
 
     /////////////////////////////END of Async Function\\\\\\\\\\\\\\\\\\\\\\\\\
