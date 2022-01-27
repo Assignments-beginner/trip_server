@@ -201,11 +201,20 @@ async function run() {
       res.json(result);
     });
 
-    //Get Reviews API
+    //Get Tips API
     app.get("/tips", async (req, res) => {
       const cursor = tipsCollection.find({});
       const tips = await cursor.toArray();
       res.json(tips);
+    });
+
+    //Get Single Tip
+    app.get("/tips/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("Single Tip", id);
+      const query = { _id: ObjectId(id) };
+      const tip = await tipsCollection.findOne(query);
+      res.json(tip);
     });
 
     /////////////////////////////END of Async Function\\\\\\\\\\\\\\\\\\\\\\\\\
