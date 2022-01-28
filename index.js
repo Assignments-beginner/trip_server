@@ -112,15 +112,9 @@ async function run() {
       res.json(result);
     });
 
-    //Approved Filtered Blogs
-    /* app.get("/blogs/:cost", async (req, res) => {
-      const status = req.params.cost;
-      console.log(cost);
-      const filter = { blogCost: status };
-      const cursor = blogCollection.find(filter);
-      const blogs = await cursor.toArray();
-      res.json(blogs);
-    }); */
+/*-------------------------------------------------------------------------------*\
+  //////////////////////////////// Filtered Blogs \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\*-------------------------------------------------------------------------------*/
 
     //Top Rated Trip API
     app.get("/toptrip", async (req, res) => {
@@ -139,6 +133,36 @@ async function run() {
 
     //Long Trip API
     app.get("/longtrip", async (req, res) => {
+      // here always use a different api, don't put ex: the all blogs ('/blogs)
+      let query = {};
+      const category = req.query.category;
+      
+      if (category) {
+        query = { blogCategory: category };
+      }
+      const cursor = blogCollection.find(query);
+      const blogs = await cursor.toArray();
+      res.json(blogs);
+      // console.log();
+    });
+
+    //Short Trip API
+    app.get("/shorttrip", async (req, res) => {
+      // here always use a different api, don't put ex: the all blogs ('/blogs)
+      let query = {};
+      const category = req.query.category;
+      
+      if (category) {
+        query = { blogCategory: category };
+      }
+      const cursor = blogCollection.find(query);
+      const blogs = await cursor.toArray();
+      res.json(blogs);
+      // console.log();
+    });
+
+    //Expensive Trip API
+    app.get("/expensivetrip", async (req, res) => {
       // here always use a different api, don't put ex: the all blogs ('/blogs)
       let query = {};
       const category = req.query.category;
