@@ -112,6 +112,30 @@ async function run() {
       res.json(result);
     });
 
+    //Approved Filtered Blogs
+    /* app.get("/blogs/:cost", async (req, res) => {
+      const status = req.params.cost;
+      console.log(cost);
+      const filter = { blogCost: status };
+      const cursor = blogCollection.find(filter);
+      const blogs = await cursor.toArray();
+      res.json(blogs);
+    }); */
+
+    app.get("/toptrip", async (req, res) => {
+      // here always use a different api, don't put ex: the all blogs ('/blogs)
+      let query = {};
+      const rating = req.query.rating;
+      
+      if (rating) {
+        query = { blogRating: rating };
+      }
+      const cursor = blogCollection.find(query);
+      const blogs = await cursor.toArray();
+      res.json(blogs);
+      // console.log();
+    });
+
     /*-------------------------------------------------------------------------------*\
   //////////////////////////////// Users \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 \*-------------------------------------------------------------------------------*/
