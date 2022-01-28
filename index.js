@@ -7,9 +7,6 @@ require("dotenv").config();
 
 const port = process.env.PORT || 5000;
 
-//Stripe Payment Secret Key
-const stripe = require("stripe")(process.env.STRIPE_SECRET); //Add STRIPE_SECRET to Heroku Config Var otherwise it will only work in local port /5000
-
 ///middleware
 
 app.use(
@@ -18,7 +15,6 @@ app.use(
   })
 );
 
-// app.use(cors());
 app.use(express.json());
 
 //URI
