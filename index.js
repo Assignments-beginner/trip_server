@@ -122,6 +122,7 @@ async function run() {
       res.json(blogs);
     }); */
 
+    //Top Rated Trip API
     app.get("/toptrip", async (req, res) => {
       // here always use a different api, don't put ex: the all blogs ('/blogs)
       let query = {};
@@ -129,6 +130,21 @@ async function run() {
       
       if (rating) {
         query = { blogRating: rating };
+      }
+      const cursor = blogCollection.find(query);
+      const blogs = await cursor.toArray();
+      res.json(blogs);
+      // console.log();
+    });
+
+    //Long Trip API
+    app.get("/longtrip", async (req, res) => {
+      // here always use a different api, don't put ex: the all blogs ('/blogs)
+      let query = {};
+      const category = req.query.category;
+      
+      if (category) {
+        query = { blogCategory: category };
       }
       const cursor = blogCollection.find(query);
       const blogs = await cursor.toArray();
